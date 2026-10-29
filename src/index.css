@@ -1,0 +1,110 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/schibsted-grotesk';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  --paper: #eef2ef;
+  --surface: #ffffff;
+  --ink: #11241d;
+  --muted: #56685f;
+  --line: #d7e0da;
+  --brand: #13805c;
+  --brand-ink: #ffffff;
+  --csekk: #ffd84a;
+  --csekk-soft: #fff4c2;
+  --danger: #c23b22;
+  --danger-soft: #fde6e0;
+  --warn: #8a5d00;
+  /* diagram: validálva (dataviz validate_palette, light / #fff) */
+  --series-private: #13805c;
+  --series-corporate: #b07a00;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --paper: #0e1814;
+  --surface: #16241f;
+  --ink: #e6efea;
+  --muted: #93a69c;
+  --line: #26392f;
+  --brand: #3fb58c;
+  --brand-ink: #0e1814;
+  --csekk: #f2ce45;
+  --csekk-soft: #3a3415;
+  --danger: #ff7a5c;
+  --danger-soft: #3d1e17;
+  --warn: #f2ce45;
+  /* diagram: validálva (dataviz validate_palette, dark / #16241f) */
+  --series-private: #2a9873;
+  --series-corporate: #b88a10;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-csekk: var(--csekk);
+  --color-csekk-soft: var(--csekk-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-warn: var(--warn);
+  --color-series-private: var(--series-private);
+  --color-series-corporate: var(--series-corporate);
+
+  --font-sans: 'Schibsted Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Összegek mindig táblázatos számjegyekkel */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* A "sárga csekk" perforáció a keretmérő tetején */
+.perforation {
+  background-image: radial-gradient(circle at 5px 0, var(--paper) 3px, transparent 3.5px);
+  background-size: 10px 6px;
+  background-repeat: repeat-x;
+}
+
+@keyframes copied {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.copied-pop {
+  animation: copied 0.18s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copied-pop { animation: none; }
+  * { transition: none !important; }
+}
