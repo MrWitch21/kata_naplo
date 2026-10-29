@@ -178,10 +178,7 @@ export function calculateYear(setup: YearSetup, items: RevenueItem[]): YearResul
     }))
   deadlines.push({
     date: annualDeadline(setup.year),
-    label:
-      overLimitTax + supplementaryTax > 0
-        ? 'Éves bevallás + különadó / kiegészítő adó'
-        : 'Éves bevallás (KATA)',
+    label: overLimitTax + supplementaryTax > 0 ? 'Éves bevallás + különadó / kiegészítő adó' : 'Éves bevallás (KATA)',
     amount: overLimitTax + supplementaryTax,
     kind: 'eves',
   })
@@ -255,11 +252,19 @@ export function quickCalc(q: QuickInput): YearResult {
   const top = Math.min(corporate, Math.round(q.revenue * q.topClientShare))
   const items: RevenueItem[] = []
   const date = `${q.year}-${pad(q.toMonth)}-01`
-  if (q.revenue - corporate > 0) items.push({ date, amount: q.revenue - corporate, clientId: 'magan', clientKind: 'magan' })
+  if (q.revenue - corporate > 0)
+    items.push({ date, amount: q.revenue - corporate, clientId: 'magan', clientKind: 'magan' })
   if (top > 0) items.push({ date, amount: top, clientId: 'ceg-top', clientKind: 'ceg' })
   if (corporate - top > 0) items.push({ date, amount: corporate - top, clientId: 'ceg-tobbi', clientKind: 'ceg' })
   return calculateYear(
-    { year: q.year, track: q.track, fromMonth: q.fromMonth, toMonth: q.toMonth, exemptMonths: [], minWagePrevYear: q.minWagePrevYear },
+    {
+      year: q.year,
+      track: q.track,
+      fromMonth: q.fromMonth,
+      toMonth: q.toMonth,
+      exemptMonths: [],
+      minWagePrevYear: q.minWagePrevYear,
+    },
     items,
   )
 }

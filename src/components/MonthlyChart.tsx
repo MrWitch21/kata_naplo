@@ -48,7 +48,14 @@ export function MonthlyChart({ data, activeMonths }: Props) {
         <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="img" aria-label="Havi befolyt bevétel">
           {ticks.map((t) => (
             <g key={t}>
-              <line x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} stroke="var(--line)" strokeDasharray={t === 0 ? undefined : '2 4'} />
+              <line
+                x1={PAD.left}
+                x2={W - PAD.right}
+                y1={y(t)}
+                y2={y(t)}
+                stroke="var(--line)"
+                strokeDasharray={t === 0 ? undefined : '2 4'}
+              />
               <text x={PAD.left - 8} y={y(t) + 4} textAnchor="end" fontSize="11" fill="var(--muted)" className="tnum">
                 {t === 0 ? '0' : ftShort(t).replace(' Ft', '')}
               </text>

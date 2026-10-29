@@ -54,11 +54,32 @@ export function Settings() {
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Név (e.v.)" value={profile.name} onChange={(e) => updateProfile({ name: e.target.value })} />
             <Field label="Cím" value={profile.address} onChange={(e) => updateProfile({ address: e.target.value })} />
-            <Field label="Adószám" mono value={profile.taxNumber} onChange={(e) => updateProfile({ taxNumber: e.target.value })} placeholder="12345678-1-08" />
-            <Field label="Nyilvántartási szám" mono value={profile.registrationNumber} onChange={(e) => updateProfile({ registrationNumber: e.target.value })} />
-            <Field label="Bankszámlaszám" mono value={profile.bankAccount} onChange={(e) => updateProfile({ bankAccount: e.target.value })} />
+            <Field
+              label="Adószám"
+              mono
+              value={profile.taxNumber}
+              onChange={(e) => updateProfile({ taxNumber: e.target.value })}
+              placeholder="12345678-1-08"
+            />
+            <Field
+              label="Nyilvántartási szám"
+              mono
+              value={profile.registrationNumber}
+              onChange={(e) => updateProfile({ registrationNumber: e.target.value })}
+            />
+            <Field
+              label="Bankszámlaszám"
+              mono
+              value={profile.bankAccount}
+              onChange={(e) => updateProfile({ bankAccount: e.target.value })}
+            />
             <Field label="IBAN" mono value={profile.iban} onChange={(e) => updateProfile({ iban: e.target.value })} />
-            <Field label="E-mail" type="email" value={profile.email} onChange={(e) => updateProfile({ email: e.target.value })} />
+            <Field
+              label="E-mail"
+              type="email"
+              value={profile.email}
+              onChange={(e) => updateProfile({ email: e.target.value })}
+            />
             <Field label="Telefon" value={profile.phone} onChange={(e) => updateProfile({ phone: e.target.value })} />
             <div className="sm:col-span-2">
               <Field
@@ -69,7 +90,12 @@ export function Settings() {
               />
             </div>
             <label className="flex items-center gap-2 text-sm font-medium sm:col-span-2">
-              <input type="checkbox" checked={profile.vatExempt} onChange={(e) => updateProfile({ vatExempt: e.target.checked })} className="size-4 accent-[var(--brand)]" />
+              <input
+                type="checkbox"
+                checked={profile.vatExempt}
+                onChange={(e) => updateProfile({ vatExempt: e.target.checked })}
+                className="size-4 accent-[var(--brand)]"
+              />
               Alanyi adómentes vagyok (ÁFA: AAM)
             </label>
           </div>
@@ -83,17 +109,39 @@ export function Settings() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <SelectField label="KATA-sáv" value={setup.track} onChange={(e) => saveYear({ track: e.target.value as Track })}>
+                <SelectField
+                  label="KATA-sáv"
+                  value={setup.track}
+                  onChange={(e) => saveYear({ track: e.target.value as Track })}
+                >
                   {tracksForYear(year).map((t) => (
-                    <option key={t} value={t}>{TRACK_LABEL[t]}</option>
+                    <option key={t} value={t}>
+                      {TRACK_LABEL[t]}
+                    </option>
                   ))}
                 </SelectField>
               </div>
-              <SelectField label="Katás ettől" value={setup.fromMonth} onChange={(e) => saveYear({ fromMonth: Math.min(Number(e.target.value), setup.toMonth) })}>
-                {MONTHS_LONG.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+              <SelectField
+                label="Katás ettől"
+                value={setup.fromMonth}
+                onChange={(e) => saveYear({ fromMonth: Math.min(Number(e.target.value), setup.toMonth) })}
+              >
+                {MONTHS_LONG.map((m, i) => (
+                  <option key={m} value={i + 1}>
+                    {m}
+                  </option>
+                ))}
               </SelectField>
-              <SelectField label="Eddig" value={setup.toMonth} onChange={(e) => saveYear({ toMonth: Math.max(Number(e.target.value), setup.fromMonth) })}>
-                {MONTHS_LONG.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+              <SelectField
+                label="Eddig"
+                value={setup.toMonth}
+                onChange={(e) => saveYear({ toMonth: Math.max(Number(e.target.value), setup.fromMonth) })}
+              >
+                {MONTHS_LONG.map((m, i) => (
+                  <option key={m} value={i + 1}>
+                    {m}
+                  </option>
+                ))}
               </SelectField>
               {year >= 2028 && (
                 <div className="sm:col-span-2">
@@ -109,7 +157,9 @@ export function Settings() {
             </div>
             <fieldset className="mt-4">
               <legend className="mb-1 text-sm font-medium">Mentes hónapok</legend>
-              <p className="mb-2 text-xs text-muted">Táppénz, CSED, GYED, ápolási díj vagy szünetelés: ezekre a hónapokra nincs tételes adó.</p>
+              <p className="mb-2 text-xs text-muted">
+                Táppénz, CSED, GYED, ápolási díj vagy szünetelés: ezekre a hónapokra nincs tételes adó.
+              </p>
               <div className="flex flex-wrap gap-1.5">
                 {MONTHS.map((m, i) => {
                   const month = i + 1
@@ -122,7 +172,11 @@ export function Settings() {
                       disabled={!inRange}
                       aria-pressed={on}
                       onClick={() =>
-                        saveYear({ exemptMonths: on ? setup.exemptMonths.filter((x) => x !== month) : [...setup.exemptMonths, month].sort((a, b) => a - b) })
+                        saveYear({
+                          exemptMonths: on
+                            ? setup.exemptMonths.filter((x) => x !== month)
+                            : [...setup.exemptMonths, month].sort((a, b) => a - b),
+                        })
                       }
                       className={`rounded-md border px-2.5 py-1 text-sm disabled:opacity-30 ${on ? 'border-ink bg-ink text-paper' : 'border-line hover:border-ink/40'}`}
                     >
@@ -137,19 +191,44 @@ export function Settings() {
           <Card>
             <h2 className="mb-4 font-semibold">Számlaszámok</h2>
             <div className="grid gap-4 sm:grid-cols-[1fr_7rem_7rem]">
-              <Field label="Sablon" mono value={profile.numberPattern} onChange={(e) => updateProfile({ numberPattern: e.target.value })} hint="{YYYY} év, {YY} rövid év, {N} sorszám" />
-              <Field label="Sorszám hossza" type="number" min={1} max={8} value={profile.numberPadding} onChange={(e) => updateProfile({ numberPadding: Number(e.target.value) || 1 })} />
-              <Field label="Fizetési idő (nap)" type="number" min={0} max={120} value={profile.paymentTermDays} onChange={(e) => updateProfile({ paymentTermDays: Number(e.target.value) || 0 })} />
+              <Field
+                label="Sablon"
+                mono
+                value={profile.numberPattern}
+                onChange={(e) => updateProfile({ numberPattern: e.target.value })}
+                hint="{YYYY} év, {YY} rövid év, {N} sorszám"
+              />
+              <Field
+                label="Sorszám hossza"
+                type="number"
+                min={1}
+                max={8}
+                value={profile.numberPadding}
+                onChange={(e) => updateProfile({ numberPadding: Number(e.target.value) || 1 })}
+              />
+              <Field
+                label="Fizetési idő (nap)"
+                type="number"
+                min={0}
+                max={120}
+                value={profile.paymentTermDays}
+                onChange={(e) => updateProfile({ paymentTermDays: Number(e.target.value) || 0 })}
+              />
             </div>
             <div className="mt-3">
-              <CopyRow label="Így néz ki" value={renderNumber({ pattern: profile.numberPattern, padding: profile.numberPadding }, year, 1)} mono />
+              <CopyRow
+                label="Így néz ki"
+                value={renderNumber({ pattern: profile.numberPattern, padding: profile.numberPadding }, year, 1)}
+                mono
+              />
             </div>
           </Card>
 
           <Card>
             <h2 className="mb-1 font-semibold">Mentés és visszatöltés</h2>
             <p className="mb-4 text-sm text-muted">
-              Minden adat csak ebben a böngészőben van, szerverre semmi nem megy. Ha törlöd a böngészési adatokat, elveszik, ezért ments rendszeresen.
+              Minden adat csak ebben a böngészőben van, szerverre semmi nem megy. Ha törlöd a böngészési adatokat,
+              elveszik, ezért ments rendszeresen.
             </p>
             <div className="flex flex-wrap gap-2">
               <Button onClick={download}>
@@ -158,7 +237,13 @@ export function Settings() {
               <Button onClick={() => fileRef.current?.click()}>
                 <Upload size={16} aria-hidden="true" /> Visszatöltés fájlból
               </Button>
-              <input ref={fileRef} type="file" accept="application/json" className="hidden" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />
+              <input
+                ref={fileRef}
+                type="file"
+                accept="application/json"
+                className="hidden"
+                onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])}
+              />
               <Button
                 variant="danger"
                 onClick={() => {

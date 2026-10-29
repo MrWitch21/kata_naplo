@@ -18,7 +18,6 @@
   --danger: #c23b22;
   --danger-soft: #fde6e0;
   --warn: #8a5d00;
-  /* diagram: validálva (dataviz validate_palette, light / #fff) */
   --series-private: #13805c;
   --series-corporate: #b07a00;
   color-scheme: light;
@@ -37,7 +36,6 @@
   --danger: #ff7a5c;
   --danger-soft: #3d1e17;
   --warn: #f2ce45;
-  /* diagram: validálva (dataviz validate_palette, dark / #16241f) */
   --series-private: #2a9873;
   --series-corporate: #b88a10;
   color-scheme: dark;
@@ -97,14 +95,24 @@ textarea {
 }
 
 @keyframes copied {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 .copied-pop {
   animation: copied 0.18s ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .copied-pop { animation: none; }
-  * { transition: none !important; }
+  .copied-pop {
+    animation: none;
+  }
+  * {
+    transition: none !important;
+  }
 }

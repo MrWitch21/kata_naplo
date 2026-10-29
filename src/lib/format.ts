@@ -12,8 +12,34 @@ export function ftShort(n: number) {
   return ft(n)
 }
 
-export const MONTHS = ['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.', 'okt.', 'nov.', 'dec.']
-export const MONTHS_LONG = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december']
+export const MONTHS = [
+  'jan.',
+  'febr.',
+  'márc.',
+  'ápr.',
+  'máj.',
+  'jún.',
+  'júl.',
+  'aug.',
+  'szept.',
+  'okt.',
+  'nov.',
+  'dec.',
+]
+export const MONTHS_LONG = [
+  'január',
+  'február',
+  'március',
+  'április',
+  'május',
+  'június',
+  'július',
+  'augusztus',
+  'szeptember',
+  'október',
+  'november',
+  'december',
+]
 
 /** 2026-04-12 → 2026. ápr. 12. */
 export function date(iso: string) {

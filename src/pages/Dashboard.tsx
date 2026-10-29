@@ -52,7 +52,9 @@ export function Dashboard() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm text-muted">{year}-ben befolyt bevétel</p>
-            <p className="tnum text-[clamp(2.4rem,7vw,3.75rem)] leading-none font-bold tracking-[-0.03em]">{ft(result.revenue.total)}</p>
+            <p className="tnum text-[clamp(2.4rem,7vw,3.75rem)] leading-none font-bold tracking-[-0.03em]">
+              {ft(result.revenue.total)}
+            </p>
           </div>
           {unpaidSum > 0 && (
             <Link to="/szamlak?szuro=fuggo" className="text-sm text-muted hover:text-ink sm:text-right">
@@ -77,7 +79,11 @@ export function Dashboard() {
       )}
 
       <div className="mb-4 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
-        <Stat label="Tételes adó az évre" value={ft(result.monthlyTaxTotal)} sub={`${ft(rules.monthlyTax)} × ${result.taxableMonths} hónap`} />
+        <Stat
+          label="Tételes adó az évre"
+          value={ft(result.monthlyTaxTotal)}
+          sub={`${ft(rules.monthlyTax)} × ${result.taxableMonths} hónap`}
+        />
         <Stat
           label={isCurrent ? 'Várható teljes adó' : 'Teljes adó'}
           value={ft(isCurrent ? projection.totalTax : result.totalTax)}
@@ -116,20 +122,28 @@ export function Dashboard() {
               {upcoming.map((d) => {
                 const days = daysBetween(now, d.date)
                 return (
-                  <li key={d.date + d.label} className="flex items-center justify-between gap-3 border-b border-line py-2.5 last:border-b-0">
+                  <li
+                    key={d.date + d.label}
+                    className="flex items-center justify-between gap-3 border-b border-line py-2.5 last:border-b-0"
+                  >
                     <div>
                       <p className="text-sm font-medium">{d.label}</p>
                       <p className="text-xs text-muted">
                         {date(d.date)}, {days === 0 ? 'ma' : `${days} nap múlva`}
                       </p>
                     </div>
-                    <span className="tnum text-sm font-semibold">{d.kind === 'eves' && d.amount === 0 ? 'bevallás' : ft(d.amount)}</span>
+                    <span className="tnum text-sm font-semibold">
+                      {d.kind === 'eves' && d.amount === 0 ? 'bevallás' : ft(d.amount)}
+                    </span>
                   </li>
                 )
               })}
             </ul>
           )}
-          <Link to="/szamlazas" className="mt-4 flex items-center justify-between rounded-xl bg-ink px-4 py-3 text-sm font-medium text-paper hover:opacity-90">
+          <Link
+            to="/szamlazas"
+            className="mt-4 flex items-center justify-between rounded-xl bg-ink px-4 py-3 text-sm font-medium text-paper hover:opacity-90"
+          >
             Új számla előkészítése <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </Card>

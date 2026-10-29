@@ -31,9 +31,7 @@ export interface RuleSet {
   /** Az értékhatár feletti bevétel különadója */
   overLimitRate: number
   /** Kifizetőnek (cégnek, vállalkozónak) számlázás */
-  corporate:
-    | { mode: 'tiltott' }
-    | { mode: 'kiegeszito'; rate: number }
+  corporate: { mode: 'tiltott' } | { mode: 'kiegeszito'; rate: number }
   /** Egy megbízóból származó bevétel aránya, ami felett megszűnik a jogosultság év végén */
   singleClientMaxShare?: number
   notes: string[]

@@ -1,4 +1,11 @@
-import { useId, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react'
+import {
+  useId,
+  useState,
+  type ButtonHTMLAttributes,
+  type InputHTMLAttributes,
+  type ReactNode,
+  type SelectHTMLAttributes,
+} from 'react'
 import { Check, Copy } from 'lucide-react'
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger'
@@ -104,11 +111,16 @@ export function CopyRow({ label, value, mono }: { label: string; value: string; 
       className="group flex w-full items-center gap-3 border-b border-line px-1 py-2.5 text-left last:border-b-0 hover:bg-ink/[0.03] disabled:cursor-default disabled:hover:bg-transparent"
     >
       <span className="w-36 shrink-0 text-sm text-muted">{label}</span>
-      <span className={`min-w-0 flex-1 truncate ${mono ? 'font-mono text-[0.88rem]' : ''} ${empty ? 'text-muted/60' : ''}`}>
+      <span
+        className={`min-w-0 flex-1 truncate ${mono ? 'font-mono text-[0.88rem]' : ''} ${empty ? 'text-muted/60' : ''}`}
+      >
         {empty ? 'nincs megadva' : value}
       </span>
       {!empty && (
-        <span className={`shrink-0 ${done ? 'text-brand' : 'text-muted opacity-60 group-hover:opacity-100'}`} aria-hidden="true">
+        <span
+          className={`shrink-0 ${done ? 'text-brand' : 'text-muted opacity-60 group-hover:opacity-100'}`}
+          aria-hidden="true"
+        >
           {done ? <Check size={16} className="copied-pop" /> : <Copy size={15} />}
         </span>
       )}
@@ -117,14 +129,24 @@ export function CopyRow({ label, value, mono }: { label: string; value: string; 
   )
 }
 
-export function Badge({ tone = 'neutral', children }: { tone?: 'neutral' | 'brand' | 'warn' | 'danger'; children: ReactNode }) {
+export function Badge({
+  tone = 'neutral',
+  children,
+}: {
+  tone?: 'neutral' | 'brand' | 'warn' | 'danger'
+  children: ReactNode
+}) {
   const styles = {
     neutral: 'bg-ink/[0.06] text-muted',
     brand: 'bg-brand/12 text-brand',
     warn: 'bg-csekk-soft text-warn',
     danger: 'bg-danger-soft text-danger',
   }[tone]
-  return <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${styles}`}>{children}</span>
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${styles}`}>
+      {children}
+    </span>
+  )
 }
 
 export function Empty({ title, children }: { title: string; children?: ReactNode }) {

@@ -71,7 +71,10 @@ describe('éves számítás', () => {
   })
 
   it('a KATA-időszakon kívüli bevételt nem számolja', () => {
-    const r = calculateYear({ ...full(2026, 'regi'), fromMonth: 6 }, [item('2026-02-01', 1_000_000), item('2025-12-01', 1_000_000)])
+    const r = calculateYear({ ...full(2026, 'regi'), fromMonth: 6 }, [
+      item('2026-02-01', 1_000_000),
+      item('2025-12-01', 1_000_000),
+    ])
     expect(r.revenue.total).toBe(0)
   })
 
@@ -88,10 +91,16 @@ describe('éves számítás', () => {
   })
 
   it('mellékállásban a küszöb 4 M Ft céges bevétel', () => {
-    const at = calculateYear(full(2027, 'mellek'), [item('2027-04-01', 4_000_000, 'ceg', 'a'), item('2027-05-01', 6_000_000, 'magan')])
+    const at = calculateYear(full(2027, 'mellek'), [
+      item('2027-04-01', 4_000_000, 'ceg', 'a'),
+      item('2027-05-01', 6_000_000, 'magan'),
+    ])
     expect(at.supplementaryThreshold).toBe(4_000_000)
     expect(at.supplementaryTax).toBe(0)
-    const over = calculateYear(full(2027, 'mellek'), [item('2027-04-01', 5_000_000, 'ceg', 'a'), item('2027-05-01', 6_000_000, 'magan')])
+    const over = calculateYear(full(2027, 'mellek'), [
+      item('2027-04-01', 5_000_000, 'ceg', 'a'),
+      item('2027-05-01', 6_000_000, 'magan'),
+    ])
     expect(over.supplementaryTax).toBe(150_000)
   })
 
@@ -103,7 +112,10 @@ describe('éves számítás', () => {
   })
 
   it('50% feletti egy-megbízós arány figyelmeztet', () => {
-    const r = calculateYear(full(2027, 'fo'), [item('2027-01-10', 6_000_000, 'ceg', 'x'), item('2027-02-10', 4_000_000, 'magan', 'y')])
+    const r = calculateYear(full(2027, 'fo'), [
+      item('2027-01-10', 6_000_000, 'ceg', 'x'),
+      item('2027-02-10', 4_000_000, 'magan', 'y'),
+    ])
     expect(r.topClient?.share).toBeCloseTo(0.6)
     expect(r.warnings.some((w) => w.text.includes('egy cégtől'))).toBe(true)
   })
@@ -138,7 +150,15 @@ describe('adóhatás', () => {
 
 describe('gyors kalkulátor', () => {
   it('bontja a bevételt magán / céges / legnagyobb ügyfél részre', () => {
-    const r = quickCalc({ year: 2027, track: 'fo', fromMonth: 1, toMonth: 12, revenue: 20_000_000, corporateShare: 0.8, topClientShare: 0.55 })
+    const r = quickCalc({
+      year: 2027,
+      track: 'fo',
+      fromMonth: 1,
+      toMonth: 12,
+      revenue: 20_000_000,
+      corporateShare: 0.8,
+      topClientShare: 0.55,
+    })
     expect(r.revenue.corporate).toBe(16_000_000)
     expect(r.topClient).toMatchObject({ clientId: 'ceg-top', kind: 'ceg' })
     expect(r.topClient?.share).toBeCloseTo(0.55)

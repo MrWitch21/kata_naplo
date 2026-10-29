@@ -22,16 +22,28 @@ export function Clients() {
   return (
     <>
       <PageHeader title="Ügyfelek">
-        <Button variant="primary" onClick={() => setEditing({ id: uid(), name: '', kind: 'magan', taxNumber: '', address: '', email: '', note: '' })}>
+        <Button
+          variant="primary"
+          onClick={() =>
+            setEditing({ id: uid(), name: '', kind: 'magan', taxNumber: '', address: '', email: '', note: '' })
+          }
+        >
           <Plus size={16} aria-hidden="true" /> Új ügyfél
         </Button>
       </PageHeader>
 
       {editing && (
         <Card className="mb-4">
-          <h2 className="mb-4 font-semibold">{clients.some((c) => c.id === editing.id) ? 'Ügyfél szerkesztése' : 'Új ügyfél'}</h2>
+          <h2 className="mb-4 font-semibold">
+            {clients.some((c) => c.id === editing.id) ? 'Ügyfél szerkesztése' : 'Új ügyfél'}
+          </h2>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Név" value={editing.name} onChange={(e) => setEditing({ ...editing, name: e.target.value })} autoFocus />
+            <Field
+              label="Név"
+              value={editing.name}
+              onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+              autoFocus
+            />
             <SelectField
               label="Típus"
               value={editing.kind}
@@ -41,10 +53,28 @@ export function Clients() {
               <option value="magan">Magánszemély</option>
               <option value="ceg">Cég / vállalkozó</option>
             </SelectField>
-            <Field label="Cím" value={editing.address} onChange={(e) => setEditing({ ...editing, address: e.target.value })} />
-            <Field label="Adószám" mono value={editing.taxNumber} onChange={(e) => setEditing({ ...editing, taxNumber: e.target.value })} />
-            <Field label="E-mail" type="email" value={editing.email} onChange={(e) => setEditing({ ...editing, email: e.target.value })} />
-            <Field label="Megjegyzés" value={editing.note} onChange={(e) => setEditing({ ...editing, note: e.target.value })} />
+            <Field
+              label="Cím"
+              value={editing.address}
+              onChange={(e) => setEditing({ ...editing, address: e.target.value })}
+            />
+            <Field
+              label="Adószám"
+              mono
+              value={editing.taxNumber}
+              onChange={(e) => setEditing({ ...editing, taxNumber: e.target.value })}
+            />
+            <Field
+              label="E-mail"
+              type="email"
+              value={editing.email}
+              onChange={(e) => setEditing({ ...editing, email: e.target.value })}
+            />
+            <Field
+              label="Megjegyzés"
+              value={editing.note}
+              onChange={(e) => setEditing({ ...editing, note: e.target.value })}
+            />
           </div>
           <div className="mt-5 flex gap-2">
             <Button
@@ -76,7 +106,9 @@ export function Clients() {
                   <div>
                     <h2 className="text-lg font-semibold leading-tight">{c.name}</h2>
                     <div className="mt-1 flex items-center gap-2">
-                      <Badge tone={c.kind === 'ceg' ? 'warn' : 'neutral'}>{c.kind === 'ceg' ? 'Cég / vállalkozó' : 'Magánszemély'}</Badge>
+                      <Badge tone={c.kind === 'ceg' ? 'warn' : 'neutral'}>
+                        {c.kind === 'ceg' ? 'Cég / vállalkozó' : 'Magánszemély'}
+                      </Badge>
                       <span className="text-sm text-muted">
                         {year}: {ft(revenueByClient.get(c.id) ?? 0)}
                       </span>

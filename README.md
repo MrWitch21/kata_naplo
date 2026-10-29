@@ -9,9 +9,9 @@
 Rögzítsd a számláidat, és mindig látod, mennyi fér még bele a bevételi keretbe,
 mennyi adó jön, és mikor kell fizetni.
 
-[**▶ Élő demó**](https://mrwitch21.github.io/katanaplo/) · [Funkciók](#funkciók) · [Szabályok](#a-kata-szabályai-a-kódban) · [Felépítés](#felépítés) · [Futtatás](#futtatás)
+[**▶ Élő demó**](https://mrwitch21.github.io/kata_naplo/) · [Funkciók](#funkciók) · [Szabályok](#a-kata-szabályai-a-kódban) · [Felépítés](#felépítés) · [Futtatás](#futtatás)
 
-![CI](https://github.com/MrWitch21/katanaplo/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/MrWitch21/kata_naplo/actions/workflows/ci.yml/badge.svg)
 ![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-7-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
@@ -29,8 +29,8 @@ mennyi adó jön, és mikor kell fizetni.
 ---
 
 > [!NOTE]
-> **TL;DR (English):** A client-side React + TypeScript app for Hungarian *KATA* sole traders. It tracks invoices,
-> shows how much of the yearly revenue cap is used, previews the tax impact of an invoice *before* you issue it,
+> **TL;DR (English):** A client-side React + TypeScript app for Hungarian _KATA_ sole traders. It tracks invoices,
+> shows how much of the yearly revenue cap is used, previews the tax impact of an invoice _before_ you issue it,
 > and compares the current and the proposed 2027 KATA regimes. The tax rules live in a small, versioned,
 > unit-tested domain layer, so the UI never hard-codes a number.
 
@@ -52,6 +52,7 @@ azonnal frissül.
 <td width="50%" valign="top">
 
 ### 🧾 Számlázás másolópanellel
+
 A számla minden adata (számlaszám, dátumok, vevő, adószám, összeg, kötelező „Kisadózó” szöveg, AAM-kulcs)
 **egy kattintással a vágólapra** kerül, egyenként vagy egyben. A következő szabad számlaszámot a saját
 sablonod alapján ajánlja (pl. `KN-{YYYY}-{N}` → `KN-2026-026`).
@@ -60,6 +61,7 @@ sablonod alapján ajánlja (pl. `KN-{YYYY}-{N}` → `KN-2026-026`).
 <td width="50%" valign="top">
 
 ### 📈 Adóhatás a számla előtt
+
 Mielőtt kiállítod, látod, mit okoz a számla: **mennyivel nő az éves adód**, és hány százalékra
 ugrik a keret. Szól, ha átlépnéd a bevételi határt, a céges küszöböt, vagy ha egy megbízótól jönne a bevétel fele.
 
@@ -69,6 +71,7 @@ ugrik a keret. Szól, ha átlépnéd a bevételi határt, a céges küszöböt, 
 <td valign="top">
 
 ### 🟨 A bevételi keret „sárga csekkje”
+
 Az időarányos bevételi határhoz mért befolyt bevétel, szaggatott vonallal az év végi becsléssel.
 A KATA a **befolyt** bevétellel számol, ezért a fizetés napja számít, nem a számla kelte.
 
@@ -76,6 +79,7 @@ A KATA a **befolyt** bevétellel számol, ezért a fizetés napja számít, nem 
 <td valign="top">
 
 ### 🧮 Sávkalkulátor
+
 Régi KATA, új főállású és új mellékállású KATA **egymás mellett**, ugyanarra a bevételre.
 Kiszűri azt a sávot, ami a bevételi összetételeddel nem választható.
 
@@ -85,6 +89,7 @@ Kiszűri azt a sávot, ami a bevételi összetételeddel nem választható.
 <td valign="top">
 
 ### 📅 Határidők
+
 A tételes adó (következő hónap 12.) és az éves bevallás, különadó, kiegészítő adó (február 25.)
 határidői összeggel, napra pontosan.
 
@@ -92,6 +97,7 @@ határidői összeggel, napra pontosan.
 <td valign="top">
 
 ### 🔒 Az adat a tiéd
+
 Nincs szerver, nincs regisztráció. Minden a böngésződben marad. JSON-mentés és visszatöltés,
 CSV-export a könyvelőnek, világos és sötét mód.
 
@@ -110,15 +116,15 @@ Minden szám egy helyen él: [`src/domain/rules.ts`](src/domain/rules.ts). A sza
 verziózottak, ezért ha a végleges törvény eltér a javaslattól, egy fájlt és a hozzá tartozó teszteket kell
 frissíteni, a felülethez nem kell nyúlni.
 
-| | Régi KATA<br/><sub>2026</sub> | Régi KATA, átmeneti<br/><sub>2027 / 2028</sub> | Új KATA, főállás<br/><sub>2027-től</sub> | Új KATA, mellékállás<br/><sub>2027-től</sub> |
-|---|---|---|---|---|
-| **Havi tételes adó** | 50 000 Ft | 75 000 / 100 000 Ft | 100 000 Ft → 2028-tól a minimálbér 31,5%-a | 50 000 Ft → 2028-tól a minimálbér 15%-a |
-| **Éves bevételi határ** | 18 M Ft | 18 M Ft | 22 M Ft | 22 M Ft |
-| **A határ felett** | 40% különadó | 40% különadó | 40% különadó | 40% különadó |
-| **Számlázás cégnek** | ❌ megszűnik a jogosultság | ❌ | ✅ 15% kiegészítő adó | ✅ 15% kiegészítő adó |
-| **Céges küszöb** | – | – | ≈ 8 M Ft | ≈ 4 M Ft |
-| **Egy megbízó** | – | – | 50% felett év végén megszűnik | 50% felett év végén megszűnik |
-| **Állapot** | hatályos | javaslat | javaslat | javaslat |
+|                         | Régi KATA<br/><sub>2026</sub> | Régi KATA, átmeneti<br/><sub>2027 / 2028</sub> | Új KATA, főállás<br/><sub>2027-től</sub>   | Új KATA, mellékállás<br/><sub>2027-től</sub> |
+| ----------------------- | ----------------------------- | ---------------------------------------------- | ------------------------------------------ | -------------------------------------------- |
+| **Havi tételes adó**    | 50 000 Ft                     | 75 000 / 100 000 Ft                            | 100 000 Ft → 2028-tól a minimálbér 31,5%-a | 50 000 Ft → 2028-tól a minimálbér 15%-a      |
+| **Éves bevételi határ** | 18 M Ft                       | 18 M Ft                                        | 22 M Ft                                    | 22 M Ft                                      |
+| **A határ felett**      | 40% különadó                  | 40% különadó                                   | 40% különadó                               | 40% különadó                                 |
+| **Számlázás cégnek**    | ❌ megszűnik a jogosultság    | ❌                                             | ✅ 15% kiegészítő adó                      | ✅ 15% kiegészítő adó                        |
+| **Céges küszöb**        | –                             | –                                              | ≈ 8 M Ft                                   | ≈ 4 M Ft                                     |
+| **Egy megbízó**         | –                             | –                                              | 50% felett év végén megszűnik              | 50% felett év végén megszűnik                |
+| **Állapot**             | hatályos                      | javaslat                                       | javaslat                                   | javaslat                                     |
 
 A számítás menete:
 
@@ -169,8 +175,8 @@ Néhány döntés, és hogy miért:
 ## Futtatás
 
 ```bash
-git clone https://github.com/MrWitch21/katanaplo.git
-cd katanaplo
+git clone https://github.com/MrWitch21/kata_naplo.git
+cd kata_naplo
 npm install
 npm run dev        # http://localhost:5173
 npm test           # Vitest

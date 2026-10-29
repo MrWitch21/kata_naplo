@@ -10,10 +10,42 @@ export function demoData(now = new Date()): AppData {
   const month = now.getMonth() + 1
 
   const clients: Client[] = [
-    { id: 'c1', name: 'Kovács Anna', kind: 'magan', taxNumber: '', address: '9021 Győr, Példa utca 4.', email: 'anna@example.com', note: 'Webshop karbantartás, havidíjas' },
-    { id: 'c2', name: 'Szabó Bence', kind: 'magan', taxNumber: '', address: '2900 Komárom, Minta tér 2.', email: 'bence@example.com', note: 'Programozás korrepetálás' },
-    { id: 'c3', name: 'Tóth Réka', kind: 'magan', taxNumber: '', address: '1117 Budapest, Kitalált út 11.', email: 'reka@example.com', note: 'Portfólió oldal' },
-    { id: 'c4', name: 'Nagy Péter', kind: 'magan', taxNumber: '', address: '9022 Győr, Próba köz 7.', email: 'peter@example.com', note: 'Egyszeri munkák' },
+    {
+      id: 'c1',
+      name: 'Kovács Anna',
+      kind: 'magan',
+      taxNumber: '',
+      address: '9021 Győr, Példa utca 4.',
+      email: 'anna@example.com',
+      note: 'Webshop karbantartás, havidíjas',
+    },
+    {
+      id: 'c2',
+      name: 'Szabó Bence',
+      kind: 'magan',
+      taxNumber: '',
+      address: '2900 Komárom, Minta tér 2.',
+      email: 'bence@example.com',
+      note: 'Programozás korrepetálás',
+    },
+    {
+      id: 'c3',
+      name: 'Tóth Réka',
+      kind: 'magan',
+      taxNumber: '',
+      address: '1117 Budapest, Kitalált út 11.',
+      email: 'reka@example.com',
+      note: 'Portfólió oldal',
+    },
+    {
+      id: 'c4',
+      name: 'Nagy Péter',
+      kind: 'magan',
+      taxNumber: '',
+      address: '9022 Győr, Próba köz 7.',
+      email: 'peter@example.com',
+      note: 'Egyszeri munkák',
+    },
   ]
 
   const fmt = { pattern: 'KN-{YYYY}-{N}', padding: 3 }

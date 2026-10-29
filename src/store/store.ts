@@ -2,7 +2,15 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { tracksForYear } from '../domain/rules'
 import type { RevenueItem, YearSetup } from '../domain/calc'
-import { dataSchema, profileSchema, type AppData, type Client, type Invoice, type Profile, type YearConfig } from './schema'
+import {
+  dataSchema,
+  profileSchema,
+  type AppData,
+  type Client,
+  type Invoice,
+  type Profile,
+  type YearConfig,
+} from './schema'
 import { demoData } from './demo'
 
 interface State extends AppData {
@@ -49,15 +57,20 @@ export const useStore = create<State>()(
       updateProfile: (p) => set((s) => ({ profile: { ...s.profile, ...p } })),
       upsertClient: (c) =>
         set((s) => ({
-          clients: s.clients.some((x) => x.id === c.id) ? s.clients.map((x) => (x.id === c.id ? c : x)) : [...s.clients, c],
+          clients: s.clients.some((x) => x.id === c.id)
+            ? s.clients.map((x) => (x.id === c.id ? c : x))
+            : [...s.clients, c],
         })),
       removeClient: (id) => set((s) => ({ clients: s.clients.filter((c) => c.id !== id) })),
       upsertInvoice: (i) =>
         set((s) => ({
-          invoices: s.invoices.some((x) => x.id === i.id) ? s.invoices.map((x) => (x.id === i.id ? i : x)) : [...s.invoices, i],
+          invoices: s.invoices.some((x) => x.id === i.id)
+            ? s.invoices.map((x) => (x.id === i.id ? i : x))
+            : [...s.invoices, i],
         })),
       removeInvoice: (id) => set((s) => ({ invoices: s.invoices.filter((i) => i.id !== id) })),
-      markPaid: (id, date) => set((s) => ({ invoices: s.invoices.map((i) => (i.id === id ? { ...i, paidDate: date } : i)) })),
+      markPaid: (id, date) =>
+        set((s) => ({ invoices: s.invoices.map((i) => (i.id === id ? { ...i, paidDate: date } : i)) })),
       setYearConfig: (year, cfg) => set((s) => ({ years: { ...s.years, [year]: cfg } })),
       importData: (raw) => set({ ...dataSchema.parse(raw), onboarded: true }),
       loadDemo: () => set({ ...demoData(), onboarded: true, year: new Date().getFullYear() }),
@@ -85,7 +98,12 @@ export function revenueItems(s: Pick<State, 'invoices' | 'clients'>): RevenueIte
   const kind = new Map(s.clients.map((c) => [c.id, c.kind]))
   return s.invoices
     .filter((i) => i.paidDate)
-    .map((i) => ({ date: i.paidDate!, amount: i.amount, clientId: i.clientId, clientKind: kind.get(i.clientId) ?? 'magan' }))
+    .map((i) => ({
+      date: i.paidDate!,
+      amount: i.amount,
+      clientId: i.clientId,
+      clientKind: kind.get(i.clientId) ?? 'magan',
+    }))
 }
 
 export function exportData(s: AppData): AppData {

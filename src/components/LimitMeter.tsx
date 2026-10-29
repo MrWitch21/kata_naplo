@@ -67,12 +67,17 @@ export function LimitMeter({ revenue, projected, limit }: Props) {
         </div>
         <div>
           <dt className="text-muted">{over ? 'Túllépés' : 'Még belefér'}</dt>
-          <dd className={`tnum font-semibold ${over ? 'text-danger' : ''}`}>{ft(over ? revenue - limit : remaining)}</dd>
+          <dd className={`tnum font-semibold ${over ? 'text-danger' : ''}`}>
+            {ft(over ? revenue - limit : remaining)}
+          </dd>
         </div>
         {projected !== undefined && (
           <div>
             <dt className="flex items-center gap-1.5 text-muted">
-              <span className={`inline-block h-2.5 w-4 rounded-sm border-2 border-dashed ${projOver ? 'border-danger' : 'border-ink/40'}`} aria-hidden="true" />
+              <span
+                className={`inline-block h-2.5 w-4 rounded-sm border-2 border-dashed ${projOver ? 'border-danger' : 'border-ink/40'}`}
+                aria-hidden="true"
+              />
               Év végére várható
             </dt>
             <dd className={`tnum font-semibold ${projOver ? 'text-danger' : ''}`}>{ft(projected)}</dd>

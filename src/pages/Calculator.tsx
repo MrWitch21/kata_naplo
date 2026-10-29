@@ -33,59 +33,77 @@ export function Calculator() {
       </p>
 
       <Card className="mb-4">
-          <div className="grid gap-x-6 gap-y-4 md:grid-cols-2 xl:grid-cols-3">
-            <SelectField label="Év" value={input.year} onChange={(e) => set('year', Number(e.target.value))}>
-              {YEARS.map((y) => (
-                <option key={y} value={y}>{y}</option>
+        <div className="grid gap-x-6 gap-y-4 md:grid-cols-2 xl:grid-cols-3">
+          <SelectField label="Év" value={input.year} onChange={(e) => set('year', Number(e.target.value))}>
+            {YEARS.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </SelectField>
+          <div className="grid grid-cols-2 gap-3">
+            <SelectField
+              label="Első hónap"
+              value={input.fromMonth}
+              onChange={(e) => set('fromMonth', Math.min(Number(e.target.value), input.toMonth))}
+            >
+              {MONTHS_LONG.map((m, i) => (
+                <option key={m} value={i + 1}>
+                  {m}
+                </option>
               ))}
             </SelectField>
-            <div className="grid grid-cols-2 gap-3">
-              <SelectField label="Első hónap" value={input.fromMonth} onChange={(e) => set('fromMonth', Math.min(Number(e.target.value), input.toMonth))}>
-                {MONTHS_LONG.map((m, i) => (
-                  <option key={m} value={i + 1}>{m}</option>
-                ))}
-              </SelectField>
-              <SelectField label="Utolsó hónap" value={input.toMonth} onChange={(e) => set('toMonth', Math.max(Number(e.target.value), input.fromMonth))}>
-                {MONTHS_LONG.map((m, i) => (
-                  <option key={m} value={i + 1}>{m}</option>
-                ))}
-              </SelectField>
-            </div>
+            <SelectField
+              label="Utolsó hónap"
+              value={input.toMonth}
+              onChange={(e) => set('toMonth', Math.max(Number(e.target.value), input.fromMonth))}
+            >
+              {MONTHS_LONG.map((m, i) => (
+                <option key={m} value={i + 1}>
+                  {m}
+                </option>
+              ))}
+            </SelectField>
+          </div>
+          <Field
+            label="Várható éves bevétel (Ft)"
+            inputMode="numeric"
+            className="tnum"
+            value={input.revenue.toLocaleString('hu-HU')}
+            onChange={(e) => set('revenue', parseAmount(e.target.value))}
+          />
+          <Slider
+            label="Ebből cégtől"
+            value={input.corporateShare}
+            onChange={(v) =>
+              setInput((s) => ({ ...s, corporateShare: v, topClientShare: Math.min(s.topClientShare, v) }))
+            }
+            detail={ft(Math.round(input.revenue * input.corporateShare))}
+          />
+          <Slider
+            label="A legnagyobb céges ügyfél"
+            value={input.topClientShare}
+            max={input.corporateShare}
+            onChange={(v) => set('topClientShare', v)}
+            detail="a teljes bevételből"
+          />
+          {needsMinWage && (
             <Field
-              label="Várható éves bevétel (Ft)"
+              label={`${input.year - 1}. évi minimálbér (Ft)`}
               inputMode="numeric"
               className="tnum"
-              value={input.revenue.toLocaleString('hu-HU')}
-              onChange={(e) => set('revenue', parseAmount(e.target.value))}
+              placeholder={(KNOWN_MIN_WAGE[input.year - 1] ?? KNOWN_MIN_WAGE[2026]).toLocaleString('hu-HU')}
+              value={input.minWagePrevYear ? input.minWagePrevYear.toLocaleString('hu-HU') : ''}
+              onChange={(e) => set('minWagePrevYear', parseAmount(e.target.value) || undefined)}
+              hint="2028-tól a tételes adó ebből számolódik. Ha üres, a 2026-os értékkel becsül."
             />
-            <Slider
-              label="Ebből cégtől"
-              value={input.corporateShare}
-              onChange={(v) => setInput((s) => ({ ...s, corporateShare: v, topClientShare: Math.min(s.topClientShare, v) }))}
-              detail={ft(Math.round(input.revenue * input.corporateShare))}
-            />
-            <Slider
-              label="A legnagyobb céges ügyfél"
-              value={input.topClientShare}
-              max={input.corporateShare}
-              onChange={(v) => set('topClientShare', v)}
-              detail="a teljes bevételből"
-            />
-            {needsMinWage && (
-              <Field
-                label={`${input.year - 1}. évi minimálbér (Ft)`}
-                inputMode="numeric"
-                className="tnum"
-                placeholder={(KNOWN_MIN_WAGE[input.year - 1] ?? KNOWN_MIN_WAGE[2026]).toLocaleString('hu-HU')}
-                value={input.minWagePrevYear ? input.minWagePrevYear.toLocaleString('hu-HU') : ''}
-                onChange={(e) => set('minWagePrevYear', parseAmount(e.target.value) || undefined)}
-                hint="2028-tól a tételes adó ebből számolódik. Ha üres, a 2026-os értékkel becsül."
-              />
-            )}
-          </div>
+          )}
+        </div>
       </Card>
 
-      <div className={`grid items-start gap-4 ${results.length > 2 ? 'lg:grid-cols-3' : results.length === 2 ? 'lg:grid-cols-2' : 'max-w-xl'}`}>
+      <div
+        className={`grid items-start gap-4 ${results.length > 2 ? 'lg:grid-cols-3' : results.length === 2 ? 'lg:grid-cols-2' : 'max-w-xl'}`}
+      >
         {results.map(({ track, r }) => (
           <ResultCard key={track} track={track} r={r} best={results.length > 1 && best?.track === track} />
         ))}
@@ -111,7 +129,9 @@ function ResultCard({ track, r, best }: { track: Track; r: YearResult; best: boo
       </div>
       <p className="text-sm text-muted">Éves adó összesen</p>
       <p className="tnum text-3xl font-bold tracking-[-0.02em]">{ft(r.totalTax)}</p>
-      <p className="text-sm text-muted">a bevétel {percent(r.effectiveRate)}-a, havonta átlagosan {ft(Math.round(r.totalTax / r.activeMonths))}</p>
+      <p className="text-sm text-muted">
+        a bevétel {percent(r.effectiveRate)}-a, havonta átlagosan {ft(Math.round(r.totalTax / r.activeMonths))}
+      </p>
 
       <dl className="mt-5 text-sm">
         {rows.map(([label, v]) => (
@@ -126,7 +146,8 @@ function ResultCard({ track, r, best }: { track: Track; r: YearResult; best: boo
         </div>
         {r.rules.monthlyTaxBasis && (
           <p className="border-t border-line pt-2 text-xs text-muted">
-            {r.rules.monthlyTaxBasis.minWageYear}. évi minimálbér {ft(r.rules.monthlyTaxBasis.minWage)} × {percent(r.rules.monthlyTaxBasis.ratio).replace(' ', '')}
+            {r.rules.monthlyTaxBasis.minWageYear}. évi minimálbér {ft(r.rules.monthlyTaxBasis.minWage)} ×{' '}
+            {percent(r.rules.monthlyTaxBasis.ratio).replace(' ', '')}
             {r.rules.monthlyTaxBasis.estimated && ' (becslés)'}
           </p>
         )}
@@ -148,7 +169,12 @@ function ResultCard({ track, r, best }: { track: Track; r: YearResult; best: boo
         <ul className="mt-2 space-y-1">
           {r.rules.sources.map((s) => (
             <li key={s.url}>
-              <a href={s.url} target="_blank" rel="noreferrer" className="text-brand underline-offset-2 hover:underline">
+              <a
+                href={s.url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-brand underline-offset-2 hover:underline"
+              >
                 {s.title}
               </a>
             </li>
@@ -159,7 +185,19 @@ function ResultCard({ track, r, best }: { track: Track; r: YearResult; best: boo
   )
 }
 
-function Slider({ label, value, onChange, detail, max = 1 }: { label: string; value: number; onChange: (v: number) => void; detail: string; max?: number }) {
+function Slider({
+  label,
+  value,
+  onChange,
+  detail,
+  max = 1,
+}: {
+  label: string
+  value: number
+  onChange: (v: number) => void
+  detail: string
+  max?: number
+}) {
   return (
     <div>
       <div className="mb-1 flex justify-between text-sm">

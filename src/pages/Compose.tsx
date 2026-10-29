@@ -64,11 +64,7 @@ export function Compose() {
     }
   }, [form.amount, form.paidDate, form.dueDate, form.id, invoices, clients, client?.id, clientKind, state])
 
-  const invoiceText = [
-    profile.invoiceNote,
-    profile.vatExempt ? 'Alanyi adómentes (AAM)' : '',
-    form.note,
-  ]
+  const invoiceText = [profile.invoiceNote, profile.vatExempt ? 'Alanyi adómentes (AAM)' : '', form.note]
     .filter(Boolean)
     .join('. ')
 
@@ -111,15 +107,28 @@ export function Compose() {
     <>
       <PageHeader title={editing ? `Számla: ${editing.number}` : 'Új számla'} />
       <p className="-mt-3 mb-6 max-w-[62ch] text-muted">
-        Töltsd ki itt, másold át a számlázó programodba (Számlázz.hu, Billingo, NAV Online Számla), aztán rögzítsd,
-        hogy a bevételi keret és az adó mindig naprakész legyen.
+        Töltsd ki itt, másold át a számlázó programodba (Számlázz.hu, Billingo, NAV Online Számla), aztán rögzítsd, hogy
+        a bevételi keret és az adó mindig naprakész legyen.
       </p>
 
       <div className="grid items-start gap-4 xl:grid-cols-[1.1fr_1fr]">
         <Card>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Számlaszám" mono value={form.number} onChange={(e) => set('number', e.target.value)} hint="A következő szabad sorszámot ajánlja" />
-            <Field label="Összeg (Ft)" inputMode="numeric" className="tnum" value={form.amount ? form.amount.toLocaleString('hu-HU') : ''} placeholder="0" onChange={(e) => set('amount', parseAmount(e.target.value))} />
+            <Field
+              label="Számlaszám"
+              mono
+              value={form.number}
+              onChange={(e) => set('number', e.target.value)}
+              hint="A következő szabad sorszámot ajánlja"
+            />
+            <Field
+              label="Összeg (Ft)"
+              inputMode="numeric"
+              className="tnum"
+              value={form.amount ? form.amount.toLocaleString('hu-HU') : ''}
+              placeholder="0"
+              onChange={(e) => set('amount', parseAmount(e.target.value))}
+            />
 
             <div className="sm:col-span-2">
               {newClient ? (
@@ -133,13 +142,30 @@ export function Compose() {
                     )}
                   </div>
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <Field label="Név" value={newClient.name} onChange={(e) => setNewClient({ ...newClient, name: e.target.value })} />
-                    <SelectField label="Típus" value={newClient.kind} onChange={(e) => setNewClient({ ...newClient, kind: e.target.value as Client['kind'] })}>
+                    <Field
+                      label="Név"
+                      value={newClient.name}
+                      onChange={(e) => setNewClient({ ...newClient, name: e.target.value })}
+                    />
+                    <SelectField
+                      label="Típus"
+                      value={newClient.kind}
+                      onChange={(e) => setNewClient({ ...newClient, kind: e.target.value as Client['kind'] })}
+                    >
                       <option value="magan">Magánszemély</option>
                       <option value="ceg">Cég / vállalkozó</option>
                     </SelectField>
-                    <Field label="Cím" value={newClient.address} onChange={(e) => setNewClient({ ...newClient, address: e.target.value })} />
-                    <Field label="Adószám" mono value={newClient.taxNumber} onChange={(e) => setNewClient({ ...newClient, taxNumber: e.target.value })} />
+                    <Field
+                      label="Cím"
+                      value={newClient.address}
+                      onChange={(e) => setNewClient({ ...newClient, address: e.target.value })}
+                    />
+                    <Field
+                      label="Adószám"
+                      mono
+                      value={newClient.taxNumber}
+                      onChange={(e) => setNewClient({ ...newClient, taxNumber: e.target.value })}
+                    />
                   </div>
                 </div>
               ) : (
@@ -161,21 +187,45 @@ export function Compose() {
             </div>
 
             <div className="sm:col-span-2">
-              <Field label="Tétel megnevezése" value={form.description} onChange={(e) => set('description', e.target.value)} placeholder="pl. Weboldal fejlesztése, 2. ütem" />
+              <Field
+                label="Tétel megnevezése"
+                value={form.description}
+                onChange={(e) => set('description', e.target.value)}
+                placeholder="pl. Weboldal fejlesztése, 2. ütem"
+              />
             </div>
             <Field
               label="Kelte"
               type="date"
               value={form.issueDate}
               onChange={(e) =>
-                setForm((f) => ({ ...f, issueDate: e.target.value, dueDate: addDays(e.target.value, profile.paymentTermDays) }))
+                setForm((f) => ({
+                  ...f,
+                  issueDate: e.target.value,
+                  dueDate: addDays(e.target.value, profile.paymentTermDays),
+                }))
               }
             />
-            <Field label="Teljesítés" type="date" value={form.fulfillmentDate} onChange={(e) => set('fulfillmentDate', e.target.value)} />
-            <Field label="Fizetési határidő" type="date" value={form.dueDate} onChange={(e) => set('dueDate', e.target.value)} />
+            <Field
+              label="Teljesítés"
+              type="date"
+              value={form.fulfillmentDate}
+              onChange={(e) => set('fulfillmentDate', e.target.value)}
+            />
+            <Field
+              label="Fizetési határidő"
+              type="date"
+              value={form.dueDate}
+              onChange={(e) => set('dueDate', e.target.value)}
+            />
             <div>
               <label className="mb-1 flex items-center gap-2 text-sm font-medium">
-                <input type="checkbox" checked={!!form.paidDate} onChange={(e) => set('paidDate', e.target.checked ? today() : null)} className="size-4 accent-[var(--brand)]" />
+                <input
+                  type="checkbox"
+                  checked={!!form.paidDate}
+                  onChange={(e) => set('paidDate', e.target.checked ? today() : null)}
+                  className="size-4 accent-[var(--brand)]"
+                />
                 Már kifizették
               </label>
               <input
@@ -188,7 +238,11 @@ export function Compose() {
               />
             </div>
             <div className="sm:col-span-2">
-              <Field label="Megjegyzés a számlára (opcionális)" value={form.note} onChange={(e) => set('note', e.target.value)} />
+              <Field
+                label="Megjegyzés a számlára (opcionális)"
+                value={form.note}
+                onChange={(e) => set('note', e.target.value)}
+              />
             </div>
           </div>
 
@@ -215,7 +269,8 @@ export function Compose() {
                 {impact.deltaTax > 0 ? `+ ${ft(impact.deltaTax)} adó` : 'Nem nő az adód'}
               </p>
               <p className="mt-1 text-sm text-muted">
-                Bevételi keret: {percent(impact.before.limitUsed)} → <span className="font-medium text-ink">{percent(impact.after.limitUsed)}</span>
+                Bevételi keret: {percent(impact.before.limitUsed)} →{' '}
+                <span className="font-medium text-ink">{percent(impact.after.limitUsed)}</span>
               </p>
               {impact.newWarnings.length > 0 && (
                 <div className="mt-3">

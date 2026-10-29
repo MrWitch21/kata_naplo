@@ -31,10 +31,32 @@ export function Invoices() {
   const total = rows.reduce((s, i) => s + i.amount, 0)
 
   const exportCsv = () => {
-    const head = ['Számlaszám', 'Ügyfél', 'Típus', 'Adószám', 'Tétel', 'Összeg', 'Kelte', 'Teljesítés', 'Határidő', 'Fizetve']
+    const head = [
+      'Számlaszám',
+      'Ügyfél',
+      'Típus',
+      'Adószám',
+      'Tétel',
+      'Összeg',
+      'Kelte',
+      'Teljesítés',
+      'Határidő',
+      'Fizetve',
+    ]
     const lines = rows.map((i) => {
       const c = clientName.get(i.clientId)
-      return [i.number, c?.name ?? '', c?.kind === 'ceg' ? 'cég' : 'magánszemély', c?.taxNumber ?? '', i.description, i.amount, i.issueDate, i.fulfillmentDate, i.dueDate, i.paidDate ?? '']
+      return [
+        i.number,
+        c?.name ?? '',
+        c?.kind === 'ceg' ? 'cég' : 'magánszemély',
+        c?.taxNumber ?? '',
+        i.description,
+        i.amount,
+        i.issueDate,
+        i.fulfillmentDate,
+        i.dueDate,
+        i.paidDate ?? '',
+      ]
     })
     const csv = [head, ...lines].map((r) => r.map((v) => `"${String(v).replaceAll('"', '""')}"`).join(';')).join('\r\n')
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
@@ -52,13 +74,20 @@ export function Invoices() {
         <Button onClick={exportCsv} disabled={!rows.length}>
           <Download size={16} aria-hidden="true" /> CSV
         </Button>
-        <Link to="/szamlazas" className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3.5 py-2 text-sm font-medium text-brand-ink hover:brightness-110">
+        <Link
+          to="/szamlazas"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3.5 py-2 text-sm font-medium text-brand-ink hover:brightness-110"
+        >
           <Plus size={16} aria-hidden="true" /> Új számla
         </Link>
       </PageHeader>
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <div className="flex rounded-lg border border-line bg-surface p-0.5 text-sm" role="group" aria-label="Szűrés állapot szerint">
+        <div
+          className="flex rounded-lg border border-line bg-surface p-0.5 text-sm"
+          role="group"
+          aria-label="Szűrés állapot szerint"
+        >
           {(
             [
               ['mind', 'Mind'],
@@ -88,7 +117,11 @@ export function Invoices() {
 
       {rows.length === 0 ? (
         <Empty title={invoices.length ? 'Nincs a szűrésnek megfelelő számla.' : 'Még nincs rögzített számla.'}>
-          {!invoices.length && <Link to="/szamlazas" className="text-brand underline">Rögzítsd az elsőt.</Link>}
+          {!invoices.length && (
+            <Link to="/szamlazas" className="text-brand underline">
+              Rögzítsd az elsőt.
+            </Link>
+          )}
         </Empty>
       ) : (
         <div className="overflow-x-auto rounded-2xl border border-line bg-surface">
@@ -100,7 +133,9 @@ export function Invoices() {
                 <th className="px-4 py-3 font-medium">Kelte</th>
                 <th className="px-4 py-3 text-right font-medium">Összeg</th>
                 <th className="px-4 py-3 font-medium">Állapot</th>
-                <th className="px-4 py-3"><span className="sr-only">Műveletek</span></th>
+                <th className="px-4 py-3">
+                  <span className="sr-only">Műveletek</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -115,15 +150,23 @@ export function Invoices() {
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">{date(i.issueDate)}</td>
                     <td className="tnum px-4 py-3 text-right font-semibold whitespace-nowrap">{ft(i.amount)}</td>
-                    <td className="px-4 py-3"><Status inv={i} now={now} kind={c?.kind} /></td>
+                    <td className="px-4 py-3">
+                      <Status inv={i} now={now} kind={c?.kind} />
+                    </td>
                     <td className="px-2 py-3">
                       <div className="flex justify-end gap-0.5">
                         {i.paidDate ? (
-                          <IconBtn label="Visszaállítás kifizetetlenre" onClick={() => markPaid(i.id, null)}><Undo2 size={16} /></IconBtn>
+                          <IconBtn label="Visszaállítás kifizetetlenre" onClick={() => markPaid(i.id, null)}>
+                            <Undo2 size={16} />
+                          </IconBtn>
                         ) : (
-                          <IconBtn label="Kifizetve ma" onClick={() => markPaid(i.id, now)}><Check size={16} /></IconBtn>
+                          <IconBtn label="Kifizetve ma" onClick={() => markPaid(i.id, now)}>
+                            <Check size={16} />
+                          </IconBtn>
                         )}
-                        <IconBtn label="Szerkesztés" onClick={() => navigate(`/szamlazas/${i.id}`)}><Pencil size={16} /></IconBtn>
+                        <IconBtn label="Szerkesztés" onClick={() => navigate(`/szamlazas/${i.id}`)}>
+                          <Pencil size={16} />
+                        </IconBtn>
                         <IconBtn
                           label="Törlés"
                           danger
@@ -141,7 +184,9 @@ export function Invoices() {
             </tbody>
             <tfoot>
               <tr className="border-t border-line">
-                <td className="px-4 py-3 text-muted" colSpan={3}>{rows.length} számla</td>
+                <td className="px-4 py-3 text-muted" colSpan={3}>
+                  {rows.length} számla
+                </td>
                 <td className="tnum px-4 py-3 text-right font-bold">{ft(total)}</td>
                 <td colSpan={2} />
               </tr>
@@ -168,7 +213,17 @@ function Status({ inv, now, kind }: { inv: Invoice; now: string; kind?: 'magan' 
   )
 }
 
-function IconBtn({ label, onClick, children, danger }: { label: string; onClick: () => void; children: React.ReactNode; danger?: boolean }) {
+function IconBtn({
+  label,
+  onClick,
+  children,
+  danger,
+}: {
+  label: string
+  onClick: () => void
+  children: React.ReactNode
+  danger?: boolean
+}) {
   return (
     <button
       type="button"
